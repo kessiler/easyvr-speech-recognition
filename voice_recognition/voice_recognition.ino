@@ -30,9 +30,21 @@ void setup()
 {
         pinMode(30, OUTPUT);
 #ifndef CDC_ENABLED
+        // bridge mode?
+        if (bridge.check())
+        {
+          cli();
+          bridge.loop(0, 1, 12, 13);
+        }
 	Serial.begin(9600);
 	Serial.println("Bridge not started!");
 #else
+        // bridge mode?
+        if (bridge.check())
+        {
+          port.begin(9600);
+          bridge.loop(port);
+        }
 	Serial.println("Bridge connection aborted!");
 #endif
 	port.begin(9600); 
